@@ -1,18 +1,27 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load blog_extras %}
 {% block content %}
-<ul class="pagination">
-  <li class="page-item disabled">
-      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-  </li>
-  <li class="page-item"><a class="page-link" href="#">1</a></li>
-  <li class="page-item active" aria-current="page">
-      <a class="page-link" href="#">2</a>
-  </li>
-  <li class="page-item"><a class="page-link" href="#">3</a></li>
-  <li class="page-item">
-      <a class="page-link" href="#">Next</a>
-  </li>
-</ul>
+    <h2>Blog Posts</h2>
+    {% for post in posts %}
+    {% row "d-flex align-items-center justify-content-center border-bottom " %}
+        {% rowChild "text-center" %}
+            <h3>{{ post.title }}</h3>
+            {% include "blog/post-byline.html" %}
+            <p>{{ post.summary }}</p>
+            <p>
+                ({{ post.content|wordcount }} words)
+                {% if post.slug %}
+                  <a href="{% url 'blog-post-detail' post.slug %}">Read More</a>
+              {% else %}
+                  <span class="text-danger">No slug available</span>
+              {% endif %}
+            </p>
+        {% endRowChild %}
+    {% endrow %}
+    {% endfor %}
+    
+    <!-- existing code here -->
+    {% row %}
 
-
+    {% endrow %}
 {% endblock %}
